@@ -15,9 +15,14 @@ export const receiveCampus = campus => ({
 
 export const getCampusById = campusId => {
   return dispatch => {
-    axios.get(`/api/campus/${campusId}`)
-      .then(response => {
-        dispatch(receiveCampus(response.data));
-      });
+  Promise
+    .all([
+      axios.get(`/api/campus/${campusId}`),
+      axios.get(`/api/campus/${campusId}/students`)
+    ])
+    .then(results => results.map(r => r.data))
+    .then(results => {
+      dispatch(receiveCampus(...results));
+    });
   };
 };

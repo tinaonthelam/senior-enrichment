@@ -2,6 +2,7 @@ const router = require('express').Router();
 module.exports = router;
 
 const Campus = require('../../db/models/campus');
+const User = require('../../db/models/user');
 
 router.get('/', function(req, res, next) {
   Campus.findAll()
@@ -25,6 +26,16 @@ router.param('campusId', function(req, res, next, id) {
 
 router.get('/:campusId', function(req, res, next) {
   res.send(req.campus);
+});
+
+router.get('/:campusId/students', function(req, res, next) {
+  User.findAll({where: {
+    campusId: req.params.campusId
+  }})
+  .then(function (foundUsers) {
+    res.send(foundUsers);
+  })
+  .catch(next);
 });
 
 router.post('/', function (req, res, next) {

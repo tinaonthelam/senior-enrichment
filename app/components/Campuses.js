@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 export default function Campuses (props) {
 
   const campuses = props.campuses;
+  console.log(campuses)
 
   return (
     <div>
